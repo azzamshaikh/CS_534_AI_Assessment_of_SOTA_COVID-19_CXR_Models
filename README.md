@@ -1,1 +1,5 @@
-# CS_534_AI_Assessment_of_SOTA_COVID-19_CXR_Models
+# CS 534 - Artificial Intelligence
+
+## Assessment of SOTA COVID-19 Chest X-Ray Models
+
+
