@@ -12,59 +12,10 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
+from data_loading.load_data import *
 
 NUM_CLASSES = 3
 DENSE_LAYER_ACTIVATION = 'softmax'
-
-
-def load_data():
-    top_level_folder = os.getcwd() + '\COVID-19_Radiography_Dataset'
-
-    # create classification list based on the folder names
-    classes = ['COVID', 'Normal', 'Viral Pneumonia']
-
-    # store paths and associated label
-    data = []
-
-    for ID, label in enumerate(classes):
-        for file in os.listdir(top_level_folder+"/"+label+"/images"):
-            data.append([label + "/images/" + file, label])
-
-    data = pd.DataFrame(data,columns=['Image_file', 'Classification'])
-
-    data['path'] = top_level_folder + '/' + data['Image_file']
-
-    data.head()
-
-    print('Number of Duplicated Samples: %d' % (data.duplicated().sum()))
-    print('Number of Total Samples: %d' % (data.isnull().value_counts()))
-
-    return data
-
-
-def split_data(df):
-    strat = df['Classification']
-    # create 70% train and 30% dummy datasets
-    train_df, dummy_df = train_test_split(df, train_size=0.7, shuffle=True, random_state=123, stratify=strat)
-
-    strat = dummy_df['Classification']
-    # create 50% validation and 50% test datasets (each 15%)
-    valid_df, test_df = train_test_split(dummy_df, train_size=0.5, shuffle=True, random_state=123, stratify=strat)
-
-    # train_df.head()
-    print(len(train_df))
-
-    print(len(dummy_df))
-
-    # valid_df.head()
-    print(len(valid_df))
-
-    # test_df.head()
-    print(len(test_df))
-
-    return train_df, dummy_df, valid_df, test_df
-
 
 def create_image_data_generators(train_df, dummy_df, valid_df, test_df):
     training_gen = ImageDataGenerator(rescale=1. / 255, rotation_range=15, vertical_flip=True)
@@ -260,7 +211,7 @@ def get_confusion_matrix(predictions,test_gen):
 
 
 def main():
-    data = load_data()
+    data = prep_data()
     train_df, dummy_df, valid_df, test_df = split_data(data)
     train_128_gen, train_224_gen, train_229_gen, test_gen = create_image_data_generators(train_df, dummy_df,
                                                                                          valid_df, test_df)
