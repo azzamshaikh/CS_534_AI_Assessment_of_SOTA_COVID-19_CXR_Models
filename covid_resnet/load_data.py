@@ -7,18 +7,16 @@ def prep_data():
     top_level_folder = os.getcwd() + '\COVID-19_Radiography_Dataset'
 
     # create classification list based on the folder names
-    classes = ['COVID', 'Normal', 'Viral Pneumonia']
+    classes = ['COVID-19', 'NORMAL', 'Viral Pneumonia']
 
     # store paths and associated label
     data = []
 
     for ID, label in enumerate(classes):
         for file in os.listdir(top_level_folder+"/"+label+"/images"):
-            data.append([label + "/images/" + file, label])
+            data.append([os.path.join(label,file), label, os.path.join(top_level_folder,label,file)])
 
-    data = pd.DataFrame(data,columns=['Image_file', 'Classification'])
-
-    data['path'] = top_level_folder + '/' + data['Image_file']
+    data = pd.DataFrame(data,columns=['Image_file', 'Classification','path'])
 
     data.head()
 
