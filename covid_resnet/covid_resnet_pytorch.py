@@ -382,14 +382,38 @@ def main():
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
+    transform_128_training = transforms.Compose([
+        transforms.Resize(size=(128, 128)),
+        transforms.RandomRotation(degrees=15),
+        transforms.RandomVerticalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+
     transform_224 = transforms.Compose([
         transforms.Resize(size=(224, 224)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
+    transform_224_training = transforms.Compose([
+        transforms.Resize(size=(224, 224)),
+        transforms.RandomRotation(degrees=15),
+        transforms.RandomVerticalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+
     transform_229 = transforms.Compose([
         transforms.Resize(size=(229, 229)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+
+    transform_229_training = transforms.Compose([
+        transforms.Resize(size=(229, 229)),
+        transforms.RandomRotation(degrees=15),
+        transforms.RandomVerticalFlip(),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
@@ -430,7 +454,7 @@ def main():
     valid_dataset_128 = copy.deepcopy(valid_dataset)
     test_dataset_128 = copy.deepcopy(test_dataset)
 
-    train_dataset_128.dataset.transform = transform_128
+    train_dataset_128.dataset.transform = transform_128_training
     valid_dataset_128.dataset.transform = transform_128
     test_dataset_128.dataset.transform = transform_128
 
@@ -438,7 +462,7 @@ def main():
     valid_dataset_224 = copy.deepcopy(valid_dataset)
     test_dataset_224 = copy.deepcopy(test_dataset)
 
-    train_dataset_224.dataset.transform = transform_224
+    train_dataset_224.dataset.transform = transform_224_training
     valid_dataset_224.dataset.transform = transform_224
     test_dataset_224.dataset.transform = transform_224
 
@@ -446,7 +470,7 @@ def main():
     valid_dataset_229 = copy.deepcopy(valid_dataset)
     test_dataset_229 = copy.deepcopy(test_dataset)
 
-    train_dataset_229.dataset.transform = transform_229
+    train_dataset_229.dataset.transform = transform_229_training
     valid_dataset_229.dataset.transform = transform_229
     test_dataset_229.dataset.transform = transform_229
 
