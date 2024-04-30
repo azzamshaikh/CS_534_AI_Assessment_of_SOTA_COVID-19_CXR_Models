@@ -8,6 +8,8 @@ from torchmetrics import Accuracy
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
+from sklearn.metrics import matthews_corrcoef
+from sklearn.metrics import roc_curve, auc
 
 
 # Functions for moving and organizing data
@@ -116,6 +118,33 @@ def main():
     # Model evaluation and metrics calculation
     predictions, targets = learn.get_preds(ds_idx=1) # predictions on validation set
 
+    # Calculate MCC
+    mcc_score = matthews_corrcoef(targets, preds.argmax(dim=-1))
+    print(mcc_score)
+
+    # Plot ROC curve for each class
+    plt.figure()
+    lw = 2
+    for i in range(len(learn.dls.vocab)):
+        fpr, tpr, _ = roc_curve(targets.cpu().numpy() == i, preds[:, i].cpu().numpy())
+        roc_auc = auc(fpr, tpr)
+        plt.plot(fpr, tpr, lw=lw, label=f'ROC curve (class {i}, area = {roc_auc:.2f})')
+    
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic')
+    plt.legend(loc="lower right")
+    
+    # Save the figure
+    plt.savefig('roc_curve.png')
+    
+    # Show the plot
+    plt.show()
+
+    # generate confusion matrix
     predictions = np.argmax(predictions, axis=1)
     correct = 0
     for idx, pred in enumerate(predictions):
