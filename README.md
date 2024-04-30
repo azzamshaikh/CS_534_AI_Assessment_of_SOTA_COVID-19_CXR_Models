@@ -4,11 +4,13 @@
 
 This repository contains the code developed for the CS 534 group project. The project focuses on the assessment of SOTA Deep Neural Networks for the Detection of COVID-19 via Chest X-Rays. 
 
+![]('./docs/media/data_visualization.png')
+
 A full write up of the project is available in the `docs` folder.
 
 ## Team Members
 
-Azzam Shaikh,  Anoushka Baidya, Chaitanya Gokule, and Cristobal Rincon Rogers
+Azzam Shaikh, Anoushka Baidya, Chaitanya Gokule, and Cristobal Rincon Rogers
 
 ## Abstract
 
