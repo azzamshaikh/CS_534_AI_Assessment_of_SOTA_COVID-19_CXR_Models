@@ -571,6 +571,15 @@ def main():
 
     '''RUNNING STAGE 2'''
 
+    # Turn off training on the network and leave only the classifier
+    for name, params in pretrained_resnet.named_parameters():
+        if name == 'fc.weight' or name == 'fc.bias': 
+            #print('found')
+            params.requires_grad = True
+        else:
+            params.requires_grad = False
+        print(name, params.requires_grad)
+
     # Setup loss function and optimizer
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(params=pretrained_resnet.parameters(), lr=1e-4)
